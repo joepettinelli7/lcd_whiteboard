@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>LCD whiteboard</title>
+        <style>
+        body, html {
+            height: 100%;
+            margin: 20px;
+            font-size: 60px;
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            padding: 20px;
+        }
+        .form-container {
+            text-align: center;
+        }
+        label {
+            font-size: 1.5em;
+        }
+        input[type="text"], input[type="submit"] {
+            font-size: 1.2em;
+            padding: 15px;
+            margin: 10px 0;
+        }
+        input[type="text"] {
+            width: 80%;
+        }
+        input[type="submit"] {
+            width: 40%;
+        }
+        button {
+            font-size: 1.5em;
+            padding: 15px 25px;
+            margin: 10px 0;
+        }
+        .response-text {
+        font-size: 1.2em;
+        padding: 20px;
+        margin: 20px 0;
+        }
+        .response-text.success {
+            color: green;
+        }
+        .response-text.fail {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="form-container">
+            <div class="response-text {% if 'successfully!' in response %}success
+                {% elif 'Please' in response %}fail{% endif %}">
+                {{ response }}
+            </div>
+            <h1>Enter info</h1>
+            <form onsubmit="onFormSubmit(event)">
+                <input type="text"
+                       id="name_enter"
+                       name="name"
+                       placeholder="Enter name"
+                >
+                <input type="text"
+                       id="number_enter"
+                       name="phone_number"
+                       maxlength="12"
+                       oninput="this.value = formatPhoneNumber(this.value)"
+                       placeholder="xxx-xxx-xxxx"
+                       onkeydown="handleKeyDown(event)">
+                <p id="response" class="response-text"></p>
+                <br><br>
+                <button type="submit">Submit</button>
+                <h5>This will add you as a recipient</h5>
+            </form>
+        </div>
+    </div>
+    <script>
+        function formatPhoneNumber(input) {
+
+            var digitsOnly = input.replace(/\D/g, '');
+            var formatted = '';
+
+            if (digitsOnly.length < 3) {
+            formatted += digitsOnly
+            }
+            if (digitsOnly.length == 3) {
+                formatted += digitsOnly.substr(0, 3) + '-';
+            }
+            if (digitsOnly.length > 3) {
+                formatted += digitsOnly.substr(0, 3) + '-';
+                formatted += digitsOnly.substr(3, 3);
+            }
+            if (digitsOnly.length == 6) {
+                formatted += digitsOnly.substr(6, 1) + '-';
+            }
+            if (digitsOnly.length > 6) {
+                formatted += '-' + digitsOnly.substr(6, 1);
+                formatted += digitsOnly.substr(7);
+            }
+
+            return formatted;
+        }
+
+        function handleKeyDown(event) {
+            if (event.key == 'Backspace') {
+                let inputField = document.getElementById('number_enter');
+                let inputValue = inputField.value;
+                let digitsOnly = inputValue.replace(/\D/g, '');
+                let returnDigits = digitsOnly.substr(0, digitsOnly.length);
+                inputField.value = returnDigits;
+            }
+        }
+
+        function onFormSubmit(event) {
+            let inputField = document.getElementById('number_enter');
+            inputField.value = inputField.value.replace(/\D/g, '');
+            event.preventDefault();
+            var formData = new FormData(event.target);
+            fetch('/submit', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                const responseText = document.getElementById('response');
+                responseText.innerText = data.response;
+                let responseClass = 'response-text ';
+                if (data.response.includes('successfully!')) {
+                    responseClass += 'success';
+                } else if (data.response.includes('Please')) {
+                    responseClass += 'fail';
+                }
+                responseText.className = responseClass;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</body>
+</html>
