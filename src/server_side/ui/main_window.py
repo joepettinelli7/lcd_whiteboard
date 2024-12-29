@@ -73,26 +73,21 @@ class WhiteboardMW(QMainWindow):
         self.show()
         self.raise_()
 
-    def start_all(self, server_set_success: bool) -> None:
+    def start_all(self) -> None:
         """
         Start the server thread and client app.
-        Called when app starts.
-
-        Args:
-            server_set_success: Whether server was successfully set
+        Called when app starts if server start was
+        successful.
 
         Returns:
 
         """
-        if server_set_success:
-            with self._server.server_condition:
-                self.start_server()
-                # Wait for server to start listening
-                # before starting ngrok
-                self._server.server_condition.wait(1)
-                self._client_controller.start_client()
-        else:
-            print('Not starting server.')
+        with self._server.server_condition:
+            self.start_server()
+            # Wait for server to start listening
+            # before starting ngrok
+            self._server.server_condition.wait(1)
+            self._client_controller.start_client()
 
     def start_server(self) -> None:
         """

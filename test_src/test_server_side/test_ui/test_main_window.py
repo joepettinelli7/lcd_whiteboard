@@ -75,20 +75,15 @@ class TestWhiteboardMW:
                 mw_geom = mw.geometry()
                 patch_set_geom.assert_called_once_with(mw_geom)
 
-    @pytest.mark.parametrize('server_success', [True, False])
-    def test_start_all(self, mw: WhiteboardMW, server_success: bool) -> None:
+    def test_start_all(self, mw: WhiteboardMW) -> None:
         """
 
         """
         with patch.object(mw, 'start_server') as patch_start_server:
             with patch.object(mw._client_controller, 'start_client') as patch_start_client:
-                mw.start_all(server_success)
-                if server_success:
-                    patch_start_server.assert_called_once()
-                    patch_start_client.assert_called_once()
-                else:
-                    patch_start_server.assert_not_called()
-                    patch_start_client.assert_not_called()
+                mw.start_all()
+                patch_start_server.assert_called_once()
+                patch_start_client.assert_called_once()
 
     def test_start_server(self, mw: WhiteboardMW) -> None:
         """

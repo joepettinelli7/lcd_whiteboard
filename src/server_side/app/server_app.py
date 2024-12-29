@@ -29,8 +29,10 @@ if __name__ == "__main__":
     mw.setGeometry(geom)
     mw.connect_signals()
     set_success = mw.set_server()
-    mw.start_all(set_success)
     mw.show_mw()
-    mw.show_message('Some functions will be disabled because server did not start. Potentially because no '
-                    'twilio account info was found.')
+    if set_success:
+        mw.start_all()
+    else:
+        mw.show_message('Some functions will be disabled because server did not start. '
+                        'Potentially because no twilio account info was found.')
     sys.exit(server_app.exec())
