@@ -162,4 +162,5 @@ cython_debug/
 .idea/
 
 # This file contains ngrok and twilio account info, so don't include.
-src/server_side/backend/configs/wb_account_info.pkl
+src/server_side/backend/configs/wb_accounts_config.pkl
+src/server_side/backend/configs/ds_config.pkl
