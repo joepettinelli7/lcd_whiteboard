@@ -26,7 +26,7 @@ import urllib.error
 from pyngrok import conf, ngrok
 from pyngrok.exception import PyngrokNgrokError
 
-from src.server_side.app import ROOT_DIR
+from src.server_side import ROOT_DIR
 
 FLASK_PORT = 6000
 NGROK_INFO_PATH: str = os.path.join(ROOT_DIR, 'src', 'server_side', 'backend', 'configs', 'wb_accounts_config.pkl')

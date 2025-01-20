@@ -40,7 +40,20 @@ class ServerApp(QApplication):
             return True
 
 
+def print_license_statement() -> None:
+    """
+    Print license statement to terminal
+
+    Returns:
+
+    """
+    print("\nLCD Whiteboard Copyright (C) 2025 Joseph Pettinelli\n"
+          "This program comes with ABSOLUTELY NO WARRANTY.\nThis is free software, " 
+          "and you are welcome to redistribute it under certain conditions.\n")
+
+
 if __name__ == "__main__":
+    print_license_statement()
     server_app = ServerApp(sys.argv)
     mw = WhiteboardMW()
     geom: QRect = server_app.primaryScreen().geometry()

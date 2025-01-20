@@ -20,7 +20,7 @@ import os
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QToolBar, QAction
 
-from src.server_side.app import ROOT_DIR
+from src.server_side import ROOT_DIR
 from src.server_side.ui.toolbar_widgets.color_select_cb import ColorSelectCb
 
 

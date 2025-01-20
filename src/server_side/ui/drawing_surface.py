@@ -22,7 +22,7 @@ from PyQt5.QtCore import Qt, QPoint, QLine
 from PyQt5.QtGui import QPainter, QPen, QPaintEvent, QMouseEvent, QColor, QPixmap
 from PyQt5.QtWidgets import QFrame
 
-from src.server_side.app import ROOT_DIR
+from src.server_side import ROOT_DIR
 from src.server_side.backend.lines.line import ColorLine
 from src.server_side.backend.lines.line_list import LineList
 from src.server_side.backend.configs.drawing_surface_config import DrawingSurfaceConfig
