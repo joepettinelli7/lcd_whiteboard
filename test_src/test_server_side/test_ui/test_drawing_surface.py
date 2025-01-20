@@ -1,6 +1,7 @@
 from unittest.mock import patch
 import pytest
 import typing
+import os
 from PyQt5 import QtCore
 from PyQt5.QtCore import QPoint, Qt, QLine, QRect
 from PyQt5.QtGui import QColor, QPixmap, QPainter
@@ -187,7 +188,7 @@ class TestDrawingSurface:
                             patch_mkdir.assert_called_once_with(IMAGE_PATH)
                         else:
                             patch_mkdir.assert_not_called()
-                        patch_save_pixmap.assert_called_once_with(IMAGE_PATH + IMAGE_NAME, "PNG")
+                        patch_save_pixmap.assert_called_once_with(os.path.join(IMAGE_PATH, IMAGE_NAME), "PNG")
                         assert got_pixmap == success
 
     def test_get_whiteboard_pixmap(self, ds: DrawingSurface) -> None:
@@ -213,7 +214,7 @@ class TestDrawingSurface:
                 patch_exist.return_value = exists
                 ds.delete_wb_image()
                 if patch_exist.return_value:
-                    patch_remove.assert_called_once_with(IMAGE_PATH + IMAGE_NAME)
+                    patch_remove.assert_called_once_with(os.path.join(IMAGE_PATH, IMAGE_NAME))
                 else:
                     patch_remove.assert_not_called()
 

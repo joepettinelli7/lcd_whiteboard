@@ -189,7 +189,7 @@ class DrawingSurface(QFrame):
         pixmap = self.get_whiteboard_pixmap()
         if not os.path.exists(IMAGE_PATH):
             os.mkdir(IMAGE_PATH)
-        save_success = pixmap.save(IMAGE_PATH + IMAGE_NAME, "PNG")
+        save_success = pixmap.save(os.path.join(IMAGE_PATH, IMAGE_NAME), "PNG")
         return save_success
 
     def get_whiteboard_pixmap(self) -> QPixmap:
@@ -211,8 +211,8 @@ class DrawingSurface(QFrame):
         Returns:
 
         """
-        if os.path.exists(IMAGE_PATH + IMAGE_NAME):
-            os.remove(IMAGE_PATH + IMAGE_NAME)
+        if os.path.exists(os.path.join(IMAGE_PATH, IMAGE_NAME)):
+            os.remove(os.path.join(IMAGE_PATH, IMAGE_NAME))
 
     def undo_line_slot(self) -> None:
         """
