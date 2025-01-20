@@ -188,7 +188,9 @@ class TestDrawingSurface:
                             patch_mkdir.assert_called_once_with(IMAGE_PATH)
                         else:
                             patch_mkdir.assert_not_called()
-                        patch_save_pixmap.assert_called_once_with(os.path.join(IMAGE_PATH, IMAGE_NAME), "PNG")
+                        save_path = os.path.join(IMAGE_PATH, IMAGE_NAME)
+                        assert '/static/' in save_path
+                        patch_save_pixmap.assert_called_once_with(save_path, "PNG")
                         assert got_pixmap == success
 
     def test_get_whiteboard_pixmap(self, ds: DrawingSurface) -> None:
@@ -214,7 +216,9 @@ class TestDrawingSurface:
                 patch_exist.return_value = exists
                 ds.delete_wb_image()
                 if patch_exist.return_value:
-                    patch_remove.assert_called_once_with(os.path.join(IMAGE_PATH, IMAGE_NAME))
+                    delete_path = os.path.join(IMAGE_PATH, IMAGE_NAME)
+                    assert '/static/' in delete_path
+                    patch_remove.assert_called_once_with(delete_path)
                 else:
                     patch_remove.assert_not_called()
 
