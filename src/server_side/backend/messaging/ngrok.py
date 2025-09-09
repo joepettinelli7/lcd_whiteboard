@@ -120,14 +120,18 @@ class NgrokClient:
 
         """
         if self._connected_already:
-            ngrok.disconnect(self._public_url)
-            tunnels = ngrok.get_tunnels()
-            assert len(tunnels) == 0
-            ngrok.kill()
-            # self.ensure_disconnect()
-            self._connected_already = False
+            try:
+                ngrok.disconnect(self._public_url)
+                tunnels = ngrok.get_tunnels()
+                assert len(tunnels) == 0
+                ngrok.kill()
+                # self.ensure_disconnect()
+                self._connected_already = False
+            except PyngrokNgrokError:
+                # Added for test function. When ngrok not actually started.
+                return None
         else:
-            pass
+            return None
 
     # def ensure_disconnect(self) -> None:
     #     """
