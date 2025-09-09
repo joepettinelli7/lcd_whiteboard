@@ -38,6 +38,7 @@ class ServerApp(QApplication):
         """
         if self:
             return True
+        return False
 
 
 def print_license_statement() -> None:
